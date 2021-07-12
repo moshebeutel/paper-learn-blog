@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Revisiting AlexNet | fastpages</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Revisiting AlexNet" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Awesome summary of the novel paper that started the deep learning big bang" />
+<meta property="og:description" content="Awesome summary of the novel paper that started the deep learning big bang" />
+<link rel="canonical" href="https://moshebeutel.github.io/paper-learn-blog/fastpages/jupyter/2020/07/08/alxnet.html" />
+<meta property="og:url" content="https://moshebeutel.github.io/paper-learn-blog/fastpages/jupyter/2020/07/08/alxnet.html" />
+<meta property="og:site_name" content="fastpages" />
+<meta property="og:image" content="https://moshebeutel.github.io/paper-learn-blog/images/chef_bepita.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-07-08T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Awesome summary of the novel paper that started the deep learning big bang","url":"https://moshebeutel.github.io/paper-learn-blog/fastpages/jupyter/2020/07/08/alxnet.html","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://moshebeutel.github.io/paper-learn-blog/fastpages/jupyter/2020/07/08/alxnet.html"},"headline":"Revisiting AlexNet","dateModified":"2020-07-08T00:00:00-05:00","datePublished":"2020-07-08T00:00:00-05:00","image":"https://moshebeutel.github.io/paper-learn-blog/images/chef_bepita.jpg","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/paper-learn-blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://moshebeutel.github.io/paper-learn-blog/feed.xml" title="fastpages" /><link rel="shortcut icon" type="image/x-icon" href="/paper-learn-blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/paper-learn-blog/">fastpages</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/paper-learn-blog/about/">About Me</a><a class="page-link" href="/paper-learn-blog/search/">Search</a><a class="page-link" href="/paper-learn-blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Revisiting AlexNet</h1><p class="page-description">Awesome summary of the novel paper that started the deep learning big bang</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-07-08T00:00:00-05:00" itemprop="datePublished">
+        Jul 8, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      1 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/paper-learn-blog/categories/#fastpages">fastpages</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/paper-learn-blog/categories/#jupyter">jupyter</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/moshebeutel/paper-learn-blog/tree/master/_notebooks/2020-07-08-alxnet.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/paper-learn-blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/moshebeutel/paper-learn-blog/master?filepath=_notebooks%2F2020-07-08-alxnet.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/paper-learn-blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/moshebeutel/paper-learn-blog/blob/master/_notebooks/2020-07-08-alxnet.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/paper-learn-blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Architecture-Tricks">Architecture Tricks </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#ReLU-Nonlinearity">ReLU Nonlinearity </a></li>
+<li class="toc-entry toc-h3"><a href="#Training-on-multiple-GPUs">Training on multiple GPUs </a></li>
+<li class="toc-entry toc-h3"><a href="#Local-Response-Normalization">Local Response Normalization </a></li>
+<li class="toc-entry toc-h3"><a href="#Overlapping-Pooling">Overlapping Pooling </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Reduce-Overfitting-Tricks">Reduce Overfitting Tricks </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Data-Augmentation">Data Augmentation </a></li>
+<li class="toc-entry toc-h3"><a href="#Dropout">Dropout </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Bibiliography">Bibiliography </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-07-08-alxnet.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Architecture-Tricks">
+<a class="anchor" href="#Architecture-Tricks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Architecture Tricks<a class="anchor-link" href="#Architecture-Tricks"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="ReLU-Nonlinearity">
+<a class="anchor" href="#ReLU-Nonlinearity" aria-hidden="true"><span class="octicon octicon-link"></span></a>ReLU Nonlinearity<a class="anchor-link" href="#ReLU-Nonlinearity"> </a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The first innovation that the paper brings to the table is the now most common ReLU ($ f(x) = max(0,x) $) activation function. Till then the most common way of applying non linearity to neural networks was the tanh ( $ f(x) = (1 + e^{-x})^{-1} $) activation function. Actually ReLUs were first ??? introduced by Nair and Hinton[???] but it was in the context of restricted Boltzman machines ???. The advantage of ReLU over tanh is that ReLU does not saturate and even if some fraction of the current batch will produce a positive input learning will occur in that pass. Therefore training a deep neural network with ReLUs is considerably faster.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/paper-learn-blog/images/copied_from_nb/../images/ReLU_vs_tanh_training.png" alt="ReLU vs. tanh training pace"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Training-on-multiple-GPUs">
+<a class="anchor" href="#Training-on-multiple-GPUs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Training on multiple GPUs<a class="anchor-link" href="#Training-on-multiple-GPUs"> </a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Back in the old days of 2011-2012 RTX2080 Ti were not available. The GPU they had was GTX 580 with 3GB of memory. But AlexNet implemntation taks advantage of the ability of GPUs to cross parrallelize the training. So AlexNet was trained on a pair of GTX 580 and the network architecture was designed for that purpase</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Local-Response-Normalization">
+<a class="anchor" href="#Local-Response-Normalization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Local Response Normalization<a class="anchor-link" href="#Local-Response-Normalization"> </a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Overlapping-Pooling">
+<a class="anchor" href="#Overlapping-Pooling" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overlapping Pooling<a class="anchor-link" href="#Overlapping-Pooling"> </a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Reduce-Overfitting-Tricks">
+<a class="anchor" href="#Reduce-Overfitting-Tricks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Reduce Overfitting Tricks<a class="anchor-link" href="#Reduce-Overfitting-Tricks"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Data-Augmentation">
+<a class="anchor" href="#Data-Augmentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Augmentation<a class="anchor-link" href="#Data-Augmentation"> </a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Dropout">
+<a class="anchor" href="#Dropout" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dropout<a class="anchor-link" href="#Dropout"> </a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Bibiliography">
+<a class="anchor" href="#Bibiliography" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bibiliography<a class="anchor-link" href="#Bibiliography"> </a>
+</h2>
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="moshebeutel/paper-learn-blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/paper-learn-blog/fastpages/jupyter/2020/07/08/alxnet.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/paper-learn-blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/paper-learn-blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/paper-learn-blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>An easy to use blogging platform with support for Jupyter Notebooks.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/fastai" title="fastai"><svg class="svg-icon grey"><use xlink:href="/paper-learn-blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/fastdotai" title="fastdotai"><svg class="svg-icon grey"><use xlink:href="/paper-learn-blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
